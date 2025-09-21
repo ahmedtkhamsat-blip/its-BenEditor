@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>itsBenEditor</title>
+<link rel="icon" href="https://cdn-icons-png.flaticon.com/128/6348/6348671.png" type="image/png">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Arabic:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+<style>
+body {
+  margin:0;
+  font-family:'IBM Plex Arabic', sans-serif;
+  background: radial-gradient(circle at top left, #0a0a0a, #141414, #000000);
+  color:#fff;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+}
+
+header {
+  text-align:center;
+  padding:40px 20px 10px;
+}
+
+header h1 {
+  font-size:3rem;
+  margin-bottom:5px;
+  color:#fff;
+  text-shadow:0 0 20px #00ffcc;
+}
+
+header p {
+  font-size:1.2rem;
+  color:#ccc;
+  margin-bottom:20px;
+  text-shadow: 1px 1px 2px #00000066;
+}
+
+/* نص تعريفي قبل الفيديوهات */
+.intro-text {
+  font-size:1.1rem;
+  text-align:center;
+  margin-bottom:30px;
+  color:#00ffcc;
+  text-shadow:0 0 15px #00ffcc66;
+  animation: glowText 2s ease-in-out infinite alternate;
+}
+
+.intro-text, .section-title, .skills .skill, .extra-sections .section-box, .tooltip span, .social a {
+  text-shadow: 1px 1px 2px #00000066;
+}
+
+@keyframes glowText {
+  0% { text-shadow: 0 0 5px #00ffcc66; color:#00ffcc; }
+  50% { text-shadow: 0 0 20px #00ffcccc; color:#00ffccaa; }
+  100% { text-shadow: 0 0 10px #00ffcc99; color:#00ffcc; }
+}
+
+/* قسم نبذة عن أحمد */
+.about {
+  display:flex;
+  flex-wrap:wrap;
+  align-items:center;
+  justify-content:center;
+  gap:20px;
+  padding:40px 20px;
+  background:#111;
+  border-radius:15px;
+  margin-bottom:40px;
+  width:90%;
+  max-width:1200px;
+}
+
+.about img {
+  width:250px;
+  height:250px;
+  object-fit:cover;
+  border-radius:15px;
+  border:5px solid #00ffcc;
+  box-shadow:0 0 20px #00ffcc88, 0 0 40px #00ffcc55 inset;
+  animation: glowImage 2s ease-in-out infinite alternate, floatImage 3s ease-in-out infinite alternate-reverse;
+}
+
+@keyframes glowImage {
+  0% { box-shadow: 0 0 5px #00ffcc66, 0 0 10px #00ffcc33 inset; }
+  50% { box-shadow: 0 0 20px #00ffcccc, 0 0 40px #00ffcc66 inset; }
+  100% { box-shadow: 0 0 10px #00ffcc99, 0 0 20px #00ffcc44 inset; }
+}
+
+@keyframes floatImage {
+  0% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+  100% { transform: translateY(0px); }
+}
+
+.about .info {
+  max-width:600px;
+}
+
+.about .info h2 {
+  color:#00ffcc;
+  font-size:2rem;
+  margin-bottom:15px;
+  text-shadow: 0 0 10px #00ffcc, 0 0 20px #00ffcc55;
+  animation: glowText 2s ease-in-out infinite alternate;
+}
+
+/* نص "عني" تحت */
+.about-text {
+  font-size:1rem;
+  margin-bottom:15px;
+  line-height:1.5;
+  color:#00ffcc;
+  text-shadow: 0 0 5px #00ffcc, 0 0 10px #00ffcc66;
+  animation: glowText 2s ease-in-out infinite alternate;
+}
+
+.skills {
+  display:flex;
+  flex-wrap:wrap;
+  gap:15px;
+}
+
+.skill {
+  background:#222;
+  padding:8px 15px;
+  border-radius:15px;
+  color:#00ffcc;
+  font-weight:bold;
+  font-size:0.9rem;
+  box-shadow:0 0 10px #00ffcc33;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.skill:hover {
+  transform:scale(1.05);
+  box-shadow:0 0 20px #00ffcc66;
+}
+
+/* الفيديوهات */
+.videos {
+  display:grid;
+  grid-template-columns:repeat(auto-fit, minmax(320px,1fr));
+  gap:30px;
+  padding:20px;
+  width:90%;
+  max-width:1200px;
+}
+
+.video-card {
+  position:relative;
+  width:100%;
+  overflow:hidden;
+  border-radius:15px;
+  box-shadow:0 0 15px #00ffcc33;
+  animation:fadeUp 0.8s ease forwards;
+  opacity:0;
+  transition: box-shadow 0.3s ease, transform 0.3s ease;
+}
+
+.video-card.vertical { aspect-ratio:9/16; }
+.video-card.horizontal { aspect-ratio:16/9; }
+
+.video-card:hover {
+  box-shadow:0 0 30px #00ffcc99;
+  transform:scale(1.02);
+}
+
+video {
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  border-radius:15px;
+}
+
+.custom-controls {
+  position:absolute;
+  bottom:0;
+  left:0;
+  width:100%;
+  background:rgba(0,0,0,0.5);
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:5px 10px;
+  box-sizing:border-box;
+  opacity:0;
+  transition:opacity 0.3s ease;
+  border-bottom-left-radius:15px;
+  border-bottom-right-radius:15px;
+}
+
+.video-card:hover .custom-controls { opacity:1; }
+
+.control-btn, .fullscreen-btn {
+  color:#00ffcc;
+  font-size:1.2rem;
+  cursor:pointer;
+  margin:0 5px;
+}
+
+.progress-container {
+  flex:1;
+  height:5px;
+  background:#222;
+  margin:0 10px;
+  border-radius:5px;
+  cursor:pointer;
+  position:relative;
+}
+
+.progress-bar {
+  height:100%;
+  width:0%;
+  background:#00ffcc;
+  border-radius:5px;
+}
+
+@keyframes fadeUp {
+  from {opacity:0; transform:translateY(40px);}
+  to {opacity:1; transform:translateY(0);}
+}
+
+/* كلمة أعمالي فوق الفيديوهات */
+.section-title {
+  text-align:center;
+  font-size:1.5rem;
+  margin-bottom:15px;
+  color:#fff;
+  text-shadow:0 0 20px #00ffcc;
+  animation: glowText 2s ease-in-out infinite alternate;
+}
+
+/* خانات كورساتي */
+.extra-sections {
+  display:flex;
+  justify-content:center;
+  gap:50px;
+  margin:40px 0;
+}
+
+.section-box {
+  position:relative;
+  width:150px;
+  height:80px;
+  background:#111;
+  border-radius:15px;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  cursor:pointer;
+  text-align:center;
+  color:#00ffcc;
+  font-weight:bold;
+  font-size:1rem;
+  box-shadow:0 0 10px #00ffcc44;
+  transition:transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.section-box:hover { transform:scale(1.05); box-shadow:0 0 20px #00ffcc99; }
+
+.section-box .tooltip {
+  position:absolute;
+  top:100%;
+  left:50%;
+  transform:translateX(-50%);
+  background:rgba(0,0,0,0.8);
+  padding:10px;
+  border-radius:10px;
+  display:none;
+  flex-direction:column;
+  gap:5px;
+  text-align:center;
+  font-size:0.9rem;
+}
+
+.section-box:hover .tooltip { display:flex; }
+
+.tooltip span {
+  color:#00ffcc;
+  animation: glowText 2s ease-in-out infinite alternate;
+}
+
+/* تواصل اجتماعي */
+.social {
+  margin:40px 0 20px;
+  display:flex;
+  gap:20px;
+}
+
+.social a {
+  color:#00ffcc;
+  font-size:1.8rem;
+  transition: transform 0.3s ease, color 0.3s ease;
+}
+
+.social a:hover { color:#fff; transform:scale(1.2); }
+
+/* واتساب ثابت تحت السوشيال */
+.whatsapp-button {
+  position:relative;
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  padding:12px 20px;
+  background:#25D366;
+  color:white;
+  font-size:1rem;
+  border-radius:30px;
+  text-decoration:none;
+  box-shadow:0 0 15px #25D36688;
+  transition:transform 0.3s ease, box-shadow 0.3s ease, opacity 0.3s ease;
+  margin-bottom:40px;
+}
+.whatsapp-button:hover { transform:scale(1.1); box-shadow:0 0 20px #25D366; }
+
+</style>
+</head>
+
+<body>
+
+<header>
+  <h1><a href="https://wa.me/201105263655" target="_blank" style="color:#fff; text-decoration:none;">itsBenEditor</a></h1>
+</header>
+
+<!-- About Section -->
+<div class="about">
+  <img
+  src="file:///H:/Privite%20My%20Picture/%D8%B4%D8%AE%D8%B5%D9%8A%D8%A9/darken_profile.jpg"
+  alt="Ahmed Ben Tarek"
+  class="profile-image"
+  />
+
+  <div class="info">
+    <h2>عني</h2>
+    <p class="about-text">خبير مونتاج وموشن جرافيكس، خبرة 3 سنوات مع اكتر من 200 عميل ابعتلي لو مهتم تطور شغلك او تتعلم مهارة المونتاج من البداية</p>
+    <div class="skills">
+      <div class="skill">After Effects</div>
+      <div class="skill">Premiere</div>
+      <div class="skill">DaVinci Resolve</div>
+    </div>
+  </div>
+</div>
+
+<div class="section-title">أعمالي</div>
+
+<section class="videos">
+<div class="video-card horizontal">
+  <video src="videos/video4.mp4"></video>
+  <div class="custom-controls">
+    <i class="control-btn fas fa-play"></i>
+    <div class="progress-container"><div class="progress-bar"></div></div>
+    <i class="control-btn fas fa-volume-up"></i>
+    <i class="fullscreen-btn fas fa-expand" title="تكبير"></i>
+  </div>
+</div>
+
+<div class="video-card horizontal">
+  <video src="videos/video7.mp4"></video>
+  <div class="custom-controls">
+    <i class="control-btn fas fa-play"></i>
+    <div class="progress-container"><div class="progress-bar"></div></div>
+    <i class="control-btn fas fa-volume-up"></i>
+    <i class="fullscreen-btn fas fa-expand" title="تكبير"></i>
+  </div>
+</div>
+
+<div class="video-card horizontal">
+  <video src="videos/video5.mp4"></video>
+  <div class="custom-controls">
+    <i class="control-btn fas fa-play"></i>
+    <div class="progress-container"><div class="progress-bar"></div></div>
+    <i class="control-btn fas fa-volume-up"></i>
+    <i class="fullscreen-btn fas fa-expand" title="تكبير"></i>
+  </div>
+</div>
+
+<div class="video-card horizontal">
+  <video src="videos/video3.mp4"></video>
+  <div class="custom-controls">
+    <i class="control-btn fas fa-play"></i>
+    <div class="progress-container"><div class="progress-bar"></div></div>
+    <i class="control-btn fas fa-volume-up"></i>
+    <i class="fullscreen-btn fas fa-expand" title="تكبير"></i>
+  </div>
+</div>
+
+<div class="video-card horizontal">
+  <video src="videos/video2.mp4"></video>
+  <div class="custom-controls">
+    <i class="control-btn fas fa-play"></i>
+    <div class="progress-container"><div class="progress-bar"></div></div>
+    <i class="control-btn fas fa-volume-up"></i>
+    <i class="fullscreen-btn fas fa-expand" title="تكبير"></i>
+  </div>
+</div>
+</section>
+
+<div class="extra-sections">
+  <div class="section-box">
+    My Courses
+    <div class="tooltip"><span>soon</span></div>
+  </div>
+</div>
+
+<div class="social">
+  <a href="https://www.instagram.com/itsbeneditor/" target="_blank"><i class="fab fa-instagram"></i></a>
+  <a href="https://www.youtube.com/@itsBenEditor" target="_blank"><i class="fab fa-youtube"></i></a>
+  <a href="https://web.facebook.com/AhmedBenTarek16" target="_blank"><i class="fab fa-facebook"></i></a>
+  <a href="https://www.behance.net/ahmedbentarek" target="_blank"><i class="fab fa-behance"></i></a>
+</div>
+
+<a class="whatsapp-button" href="https://wa.me/201105263655" target="_blank">
+  <i class="fab fa-whatsapp"></i> تواصل معنا
+</a>
+
+<script>
+const cards=document.querySelectorAll('.video-card');
+
+window.addEventListener('scroll',()=>{
+  const trigger=window.innerHeight*0.9;
+  cards.forEach(card=>{
+    const top=card.getBoundingClientRect().top;
+    if(top<trigger){
+      card.style.opacity=1;
+      card.style.transform='translateY(0)';
+    }
+  });
+});
+
+// Custom controls functionality
+const allVideos=document.querySelectorAll('video');
+allVideos.forEach(video=>{
+  const card=video.parentElement;
+  const playBtn=card.querySelector('.fa-play');
+  const progressBar=card.querySelector('.progress-bar');
+  const fullscreenBtn=card.querySelector('.fullscreen-btn');
+
+  playBtn.addEventListener('click',()=>{
+    if(video.paused){
+      video.play();
+      playBtn.classList.replace('fa-play','fa-pause');
+    }else{
+      video.pause();
+      playBtn.classList.replace('fa-pause','fa-play');
+    }
+  });
+
+  video.addEventListener('timeupdate',()=>{
+    const percent=(video.currentTime/video.duration)*100;
+    progressBar.style.width=percent+'%';
+  });
+
+  video.addEventListener('click',()=>{
+    if(video.paused){
+      video.play();
+      playBtn.classList.replace('fa-play','fa-pause');
+    }else{
+      video.pause();
+      playBtn.classList.replace('fa-pause','fa-play');
+    }
+  });
+
+  fullscreenBtn.addEventListener('click',()=>{
+    if(video.requestFullscreen){
+      video.requestFullscreen();
+    } else if(video.webkitRequestFullscreen){
+      video.webkitRequestFullscreen();
+    } else if(video.msRequestFullscreen){
+      video.msRequestFullscreen();
+    }
+  });
+});
+</script>
+
+</body>
+</html>
